@@ -27,7 +27,8 @@ export default async function Chat(req, res) {
 
 function generatePrompt(animal) {
   const capitalizedAnimal = animal[0].toUpperCase() + animal.slice(1).toLowerCase();
-  return `Eres un gran asistente de personas en búsqueda de empleo, conoces las tendencias y sabes hacer un buen curriculum.
-  pregunta: ¿${capitalizedAnimal}?
-  respuesta: `;
+  return `Eres un gran clasificador de consultas para una empresa que vende productos de ferretería, sabes etiquetar las consultas que hacen los clientes en 4 tipos diferentes: 
+  consulta de productos, consulta general, consulta no relacionada y consulta inentendible.
+  la consulta del cliente es: ¿${capitalizedAnimal}?
+  ¿que etiqueta le pones?: `;
 }
