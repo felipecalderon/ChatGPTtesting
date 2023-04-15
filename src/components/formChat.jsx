@@ -2,7 +2,7 @@
 import { useState } from "react";
 import styles from "../app/page.module.css";
 export default function FormChat(){
-    const [animalInput, setAnimalInput] = useState("");
+    const [consulta, setConsulta] = useState("");
     const [result, setResult] = useState();
 
     async function onSubmit(event) {
@@ -13,7 +13,7 @@ export default function FormChat(){
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ animal: animalInput }),
+        body: JSON.stringify({ consulta }),
       });
 
       const data = await response.json();
@@ -29,16 +29,16 @@ export default function FormChat(){
     return (
     <>
         <div className={styles.titulo}>
-            <h3>¿Que preguntaría alguien que busca laburo?</h3>
+            <h3>¿Que preguntaría un cliente en un chat de ecommerce?</h3>
         </div>
         <div className={styles.form}>
             <form onSubmit={onSubmit}>
             <input
             type="text"
-            name="animal"
-            placeholder="Ingresa tu pregunta"
-            value={animalInput}
-            onChange={(e) => setAnimalInput(e.target.value)}
+            name="consulta"
+            placeholder="Ingresa tu consulta"
+            value={consulta}
+            onChange={(e) => setConsulta(e.target.value)}
             />
             <input type="submit" value="Generar" />
             </form>
