@@ -11,6 +11,8 @@ export default async function Chat(req, res) {
       temperature: 0.1,
       max_tokens: 256,
     });
+
+
     res.status(200).json({ result: completion.data.choices[0].text });
   } catch(error) {
     if (error.response) res.status(error.response.status).json(error.response.data) 
@@ -27,8 +29,7 @@ export default async function Chat(req, res) {
 
 function generatePrompt(consulta) {
   const capitalizedAnimal = consulta[0].toUpperCase() + consulta.slice(1).toLowerCase();
-  return `Eres un gran clasificador de consultas para una empresa que vende productos de ferretería, sabes etiquetar las consultas que hacen los clientes en 4 tipos diferentes: 
-  consulta de productos, consulta general, consulta no relacionada y consulta inentendible.
+  return `Eres un gran clasificador de consultas para una empresa que vende productos de ferretería, hazle las preguntas correctas al cliente hasta saber que producto busca, una vez que ya sabes cual es el producto respodes "true".
   la consulta del cliente es: ¿${capitalizedAnimal}?
   ¿que etiqueta le pones?: `;
 }

@@ -6,17 +6,18 @@ export default async function Imagen(req, res){
     const {GET, POST, PUT, DELETE} = methods
     
     switch(req.method){
-        case GET: {
+        case POST: {
             try {
+                const {consulta} = req.body || '';
+                if (consulta.trim().length === 0) throw "Porfavor ingresa una consulta"
                 const resp = await openai.createImage({
-                    prompt: 'yo cursando el henry bootcamp',
+                    prompt: consulta,
                     n: 1,
-                    size: '512x512',
+                    size: '1024x1024',
                     response_format: "url"
                 })
                 const imagen = resp.data.data[0].url || 'oki'
-                console.log('OKII')
-                return res.json({msje: imagen})
+                return res.json(imagen)
             } catch (error) {
                 console.log(error)
                 return res.json({msje: 'no se pudo generar la imagen'})
