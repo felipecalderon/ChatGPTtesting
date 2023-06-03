@@ -8,7 +8,7 @@ export default async function Chat(req, res) {
   const completion = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: generatePrompt(consulta),
-      temperature: 0.1,
+      temperature: 0.7,
       max_tokens: 256,
     });
     res.status(200).json({ result: completion.data.choices[0].text });
@@ -27,8 +27,7 @@ export default async function Chat(req, res) {
 
 function generatePrompt(consulta) {
   const capitalizedAnimal = consulta[0].toUpperCase() + consulta.slice(1).toLowerCase();
-  return `Eres un gran clasificador de consultas para una empresa que vende productos de ferretería, sabes etiquetar las consultas que hacen los clientes en 4 tipos diferentes: 
-  consulta de productos, consulta general, consulta no relacionada y consulta inentendible.
-  la consulta del cliente es: ¿${capitalizedAnimal}?
-  ¿que etiqueta le pones?: `;
+  return `Eres un gran gestor de stock de productos para ferretería, tu tarea es generar un objeto tipo JSON con características del productos basado en tu base de datos, puede ser un valor estimado.
+  El producto es: ¿${capitalizedAnimal}.
+  Genera un objeto con sus propiedades estimadas, peso (kg), altura (cm), ancho (cm), largo (cm):`;
 }
