@@ -18,9 +18,6 @@ export default function FormChat(){
 
       const data = await response.json();
       if (response.status !== 200) throw data.error || new Error(`Request failed with status ${response.status}`);
-      
-      const objeto = JSON.parse(data.result);
-      console.log(objeto.Peso);
       setResult(data.result);
     } catch(error) {
       // Consider implementing your own error handling logic here
