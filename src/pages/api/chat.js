@@ -2,19 +2,21 @@ import { openai, configuration } from "@/openaiconfig";
 
 export default async function Chat(req, res) {
   try {
+  
   if (!configuration.apiKey) throw "OpenAI API key not configured, please follow instructions in README.md";
   const {consulta} = req.body || '';
   if (consulta.trim().length === 0) throw "Porfavor ingresa una consulta"
-  const completion = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: generatePrompt(consulta),
-      temperature: 0.1,
+
+  const conversacion = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo-0301",
+      messages: generatePrompt(req.body.consulta),
+      temperature: 0.7,
       max_tokens: 256,
     });
-
-
-    res.status(200).json({ result: completion.data.choices[0].text });
-  } catch(error) {
+  console.log(conversacion.data.choices[0].message.content);
+  res.status(200).json({ result: conversacion.data.choices[0].message.content });
+  
+} catch(error) {
     if (error.response) res.status(error.response.status).json(error.response.data) 
     else {
       console.error(`Error with OpenAI API request: ${error.message}`);
@@ -28,8 +30,9 @@ export default async function Chat(req, res) {
 }
 
 function generatePrompt(consulta) {
-  const capitalizedAnimal = consulta[0].toUpperCase() + consulta.slice(1).toLowerCase();
-  return `Eres un gran clasificador de consultas para una empresa que vende productos de ferretería, hazle las preguntas correctas al cliente hasta saber que producto busca, una vez que ya sabes cual es el producto respodes "true".
-  la consulta del cliente es: ¿${capitalizedAnimal}?
-  ¿que etiqueta le pones?: `;
+  const consultaMin = consulta.toLowerCase();
+  return [
+      { role: 'system', content: 'Eres un gran asistente conocedor de productos, sabes sus medidas, pesos y características, pueden ser valores aproximado, la respuesta debe ser directa y breve' },
+      { role: 'user', content: `¿cuanto pesa y mide en altura, ancho y profundidad el producto ${consultaMin}?` }
+    ];;
 }
